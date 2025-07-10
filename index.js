@@ -4,6 +4,7 @@ async function run() {
 	let json = fs.readFileSync('./radio-export.json').toString();
 	json = JSON.parse(json);
 	const stations = json.stations;
+	let playlist = `#EXTM3U`;
 	let txt = `# Radio Streams
 
 | Station Name | Strem link | Icon | Image |
@@ -12,6 +13,9 @@ async function run() {
 	for(let item in stations){
 		let id = parseInt(item),
 			station = stations[id];
+		playlist += `
+#EXTINF:-1,${station.name}
+${station.stream}`
 		let base64Favicon = station.favicon.replace(/^data:image\/png;base64,/, "");
 		let base64Image = station.image.replace(/^data:image\/png;base64,/, "");
 		fs.writeFileSync(`./src/favicon-${id}.png`, base64Favicon, 'base64');
@@ -20,9 +24,12 @@ async function run() {
 `;
 		console.log(id);
 	}
+	playlist += `
+`;
 	txt += `
 `;
 	fs.writeFileSync('./README.md', txt);
+	fs.writeFileSync('./playlist.m3u8', playlist);
 }
 
 run().then(() => {
