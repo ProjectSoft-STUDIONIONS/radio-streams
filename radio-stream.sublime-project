@@ -4,5 +4,13 @@
 		{
 			"path": "."
 		}
+	],
+	"build_systems": [
+		{
+			"name": "Запуск сборки проекта",
+			"working_dir": "${project_path}",
+			"cmd": ["start", "/wait", "node", "index.js"],
+			"shell": true
+		}
 	]
 }
